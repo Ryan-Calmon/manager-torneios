@@ -1,0 +1,133 @@
+/* Estilos para o modo de exibição TV */
+.tv-display {
+  min-height: 100vh;
+  width: 100vw; /* Adicionado para garantir 100% da largura da viewport */
+  background: linear-gradient(to bottom right, #757575, #4a057a, #4a057a);
+  padding: 2rem;
+  box-sizing: border-box; /* Adicionado para incluir padding na largura/altura */
+}
+
+.tv-container {
+  max-width: 1200px; /* Ou a largura máxima desejada */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.tv-title {
+  color: white;
+  font-size: 4rem;
+  font-weight: bold;
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+}
+
+.tv-badge {
+  font-size: 1.5rem;
+  padding: 0.5rem 1.5rem;
+}
+
+.loading-text {
+  text-align: center;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.game-card {
+  background-color: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.3s ease-in-out;
+  height: 100%;
+}
+
+.game-card-small {
+  background-color: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  margin-top: 12px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.game-card-title {
+  color: white;
+  text-align: center;
+  font-size: 3rem;
+}
+
+.team-blue {
+  background-color: #870ade;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.team-blue-small {
+  background-color: #870ade;
+  color: white;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+.team-red {
+  background-color: #ffff;
+   color: #870ade;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.team-red-small {
+  background-color: #fff;
+  color: #870ade;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+
+.team-name {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.vs-text {
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+}
+
+.vs-text-small {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0 0.5rem;
+}
+
+.control-button-container {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.control-button {
+  background-color: rgba(255,255,255,0.2);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Alterado para ocultar apenas a barra de rolagem horizontal */
+}
+
+
