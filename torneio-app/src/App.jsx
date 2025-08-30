@@ -4,10 +4,10 @@ import './Controle.css'
 
 const API_BASE = 'http://localhost:5000/api/torneio'
 
-function App() {
+function App( ) {
   const [categoria, setCategoria] = useState('CATEGORIA DO TORNEIO')
   const [jogos, setJogos] = useState([])
-  const [novoJogo, setNovoJogo] = useState({ dupla1: '', dupla2: '' })
+  const [novoJogo, setNovoJogo] = useState({ dupla1: '', dupla2: '', tipo: 'normal' })
   const [modoControle, setModoControle] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -37,12 +37,12 @@ function App() {
     } catch (error) {
       console.error('Erro ao carregar status:', error)
       const jogosIniciais = [
-        { id: 1, dupla1: 'João/Pedro', dupla2: 'Carlos/Ana' },
-        { id: 2, dupla1: 'Maria/José', dupla2: 'Lucas/Sofia' },
-        { id: 3, dupla1: 'Bruno/Rita', dupla2: 'Diego/Carla' },
-        { id: 4, dupla1: 'Felipe/Laura', dupla2: 'Marcos/Julia' },
-        { id: 5, dupla1: 'André/Beatriz', dupla2: 'Rafael/Camila' },
-        { id: 6, dupla1: 'Gabriel/Fernanda', dupla2: 'Thiago/Patrícia' }
+        { id: 1, dupla1: 'João/Pedro', dupla2: 'Carlos/Ana', tipo: 'final' },
+        { id: 2, dupla1: 'Maria/José', dupla2: 'Lucas/Sofia', tipo: 'normal' },
+        { id: 3, dupla1: 'Bruno/Rita', dupla2: 'Diego/Carla', tipo: 'normal' },
+        { id: 4, dupla1: 'Felipe/Laura', dupla2: 'Marcos/Julia', tipo: 'normal' },
+        { id: 5, dupla1: 'André/Beatriz', dupla2: 'Rafael/Camila', tipo: 'normal' },
+        { id: 6, dupla1: 'Gabriel/Fernanda', dupla2: 'Thiago/Patrícia', tipo: 'normal' }
       ]
       setJogos(jogosIniciais)
     } finally {
@@ -73,19 +73,25 @@ function App() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             dupla1: novoJogo.dupla1.trim(),
-            dupla2: novoJogo.dupla2.trim()
+            dupla2: novoJogo.dupla2.trim(),
+            tipo: novoJogo.tipo
           })
         })
         const data = await response.json()
         if (data.success) {
-          setNovoJogo({ dupla1: '', dupla2: '' })
+          setNovoJogo({ dupla1: '', dupla2: '', tipo: 'normal' })
           await carregarStatus()
         }
       } catch (error) {
         console.error('Erro ao adicionar jogo:', error)
         const novoId = Math.max(...jogos.map(j => j.id), 0) + 1
-        setJogos([...jogos, { id: novoId, dupla1: novoJogo.dupla1.trim(), dupla2: novoJogo.dupla2.trim() }])
-        setNovoJogo({ dupla1: '', dupla2: '' })
+        setJogos([...jogos, { 
+            id: novoId, 
+            dupla1: novoJogo.dupla1.trim(), 
+            dupla2: novoJogo.dupla2.trim(),
+            tipo: novoJogo.tipo 
+        }])
+        setNovoJogo({ dupla1: '', dupla2: '', tipo: 'normal' })
       }
     }
   }
@@ -138,36 +144,47 @@ function App() {
             </div>
           ) : (
             <div className="row row-cols-1 row-cols-md-1 g-4">
-              {jogos.slice(0, 6).map((jogo, index) => (
-                <div className="col" key={jogo.id}>
-                  {index === 0 ? (
-                    <div className="card game-card">
-                      <div className="card-header pb-3">
-                        <h5 className="card-title game-card-title">
-                          PRÓXIMO JOGO
-                        </h5>
-                      </div>
-                      <div className="card-body p-4">
-                        <div className="text-center" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1.5rem'}}>
-                          <span className="team-blue team-name" style={{fontSize: '1.5rem', minWidth: '180px', textAlign: 'center'}}>
-                            {jogo.dupla1}
-                          </span>
-                          <span className="vs-text" style={{fontSize: '2rem'}}>x</span>
-                          <span className="team-red team-name" style={{fontSize: '1.5rem', minWidth: '180px', textAlign: 'center'}}>
-                            {jogo.dupla2}
-                          </span>
+              {jogos.slice(0, 6).map((jogo, index) => {
+                const isSpecialGame = ['final', 'semi-final', 'terceiro-lugar'].includes(jogo.tipo);
+                const specialGameClass = isSpecialGame ? `game-card-${jogo.tipo}` : '';
+                
+                let gameTitle = 'PRÓXIMO JOGO';
+                if (jogo.tipo === 'final') gameTitle = 'FINAL';
+                if (jogo.tipo === 'semi-final') gameTitle = 'SEMI-FINAL';
+                if (jogo.tipo === 'terceiro-lugar') gameTitle = 'DISPUTA DE 3º LUGAR';
+
+                return (
+                  <div className="col" key={jogo.id}>
+                    {index === 0 ? (
+                      <div className={`card game-card ${specialGameClass}`}>
+                        <div className="card-header pb-3">
+                          <h5 className="card-title game-card-title">
+                            {gameTitle}
+                          </h5>
+                        </div>
+                        <div className="card-body p-4">
+                          <div className="text-center" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1.5rem'}}>
+                            <span className="team-blue team-name" style={{fontSize: '1.5rem', minWidth: '180px', textAlign: 'center'}}>
+                              {jogo.dupla1}
+                            </span>
+                            <span className="vs-text" style={{fontSize: '2rem'}}>x</span>
+                            <span className="team-red team-name" style={{fontSize: '1.5rem', minWidth: '180px', textAlign: 'center'}}>
+                              {jogo.dupla2}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="game-card-small">
-                      <span className="team-blue-small">{jogo.dupla1}</span>
-                      <span className="vs-text-small">x</span>
-                      <span className="team-red-small">{jogo.dupla2}</span>
-                    </div>
-                  )}
-                </div>
-              ))}
+                    ) : (
+                      <div className={`game-card-small ${specialGameClass}`}>
+                        {isSpecialGame && <span className="badge-small">{jogo.tipo.replace('-', ' ')}</span>}
+                        <span className="team-blue-small">{jogo.dupla1}</span>
+                        <span className="vs-text-small">x</span>
+                        <span className="team-red-small">{jogo.dupla2}</span>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
             </div>
           )}
 
@@ -232,10 +249,22 @@ function App() {
           placeholder="Dupla 2 (Ex: Carlos/Ana)"
           className="controle-input"
         />
+        <label className="controle-label" style={{marginTop: '10px'}}>Tipo de Partida</label>
+        <select
+          value={novoJogo.tipo}
+          onChange={(e) => setNovoJogo({...novoJogo, tipo: e.target.value})}
+          className="controle-input"
+        >
+          <option value="normal">Normal</option>
+          <option value="semi-final">Semi-Final</option>
+          <option value="terceiro-lugar">Disputa de 3º Lugar</option>
+          <option value="final">Final</option>
+        </select>
         <button 
           onClick={adicionarJogo} 
           className="controle-btn-success"
           disabled={loading}
+          style={{marginTop: '15px'}}
         >
           Adicionar Jogo
         </button>

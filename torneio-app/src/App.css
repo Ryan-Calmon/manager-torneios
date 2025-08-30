@@ -50,6 +50,8 @@
   align-items: center;
   justify-content: center;
   padding: 0 1rem;
+  position: relative; /* Necessário para o posicionamento do badge */
+  padding-left: 100px; /* Abre espaço para o badge */
 }
 
 .game-card-title {
@@ -130,4 +132,64 @@ html, body, #root {
   overflow-x: hidden; /* Alterado para ocultar apenas a barra de rolagem horizontal */
 }
 
+/* --- NOVOS ESTILOS PARA PARTIDAS ESPECIAIS --- */
 
+/* Estilo para a Final (dourado) */
+.game-card-final {
+  background: linear-gradient(145deg, #fceabb, #f8b500);
+  border: 2px solid #f8b500;
+}
+.game-card-final .game-card-title,
+.game-card-final .vs-text {
+  color: #a17900;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Estilo para a Semi-Final (prateado/cinza) */
+.game-card-semi-final {
+  background: linear-gradient(145deg, #e2e2e2, #c0c0c0);
+  border: 2px solid #b0b0b0;
+}
+.game-card-semi-final .game-card-title,
+.game-card-semi-final .vs-text {
+  color: #4a4a4a;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.2);
+}
+
+/* Estilo para a Disputa de 3º Lugar (bronze) */
+.game-card-terceiro-lugar {
+  background: linear-gradient(145deg, #d9a783, #b08d57);
+  border: 2px solid #a07d47;
+}
+.game-card-terceiro-lugar .game-card-title,
+.game-card-terceiro-lugar .vs-text {
+  color: #6b4f2c;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.2);
+}
+
+/* Badge para jogos futuros na lista pequena */
+.badge-small {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #ffc107;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Ajustes de cor para cada tipo de badge */
+.game-card-small.game-card-final .badge-small {
+  background-color: #f8b500;
+}
+.game-card-small.game-card-semi-final .badge-small {
+  background-color: #c0c0c0;
+}
+.game-card-small.game-card-terceiro-lugar .badge-small {
+  background-color: #b08d57;
+  color: white;
+}
